@@ -7,14 +7,16 @@ class client(object):
         self.token = token
     def send_msg(self, channel_id, msg:str):
         url = api + f'/channels/{channel_id}/messages'
-        headers = {
-          "Authorization":f"Bot {self.token}",
-          "content": f"{msg}",
+        payload = {
+          "content": msg,
           "tts": 'false',
            "embed": {
             "title": "Hello, Embed!",
             "description": "This is an embedded message."
             }
-          }        
-        r = requests.get(url=url, headers=headers)
+          }
+        headers = {
+          "Authorization":f"Bot {self.token}"
+          }
+        r = requests.post(url=url, headers=headers, json=payload)
         print(r.text)
