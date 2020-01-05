@@ -6,7 +6,7 @@ class client(object):
     def __init__(self, token):
         self.token = token
 
-    def send_msg(self, channel_id, msg:str):
+    async def send_msg(self, channel_id, msg:str):
         url = api + f'/channels/{str(channel_id)}/messages'
         payload = {
           "content": msg
@@ -14,10 +14,9 @@ class client(object):
         headers = {
           "Authorization":f"Bot {self.token}"
           }
-        r = requests.post(url=url, headers=headers, json=payload)
-        print(r.text)
+        requests.post(url=url, headers=headers, json=payload)
 
-    def send_embed(self, channel_id, desc, title=''):
+    async def send_embed(self, channel_id, desc, title=''):
         url = api + f'/channels/{str(channel_id)}/messages'
         payload = {
           "embed": {
@@ -28,5 +27,4 @@ class client(object):
         headers = {
           "Authorization":f"Bot {self.token}"
           }
-        r = requests.post(url=url, headers=headers, json=payload)
-        print(r.text)
+        requests.post(url=url, headers=headers, json=payload)
