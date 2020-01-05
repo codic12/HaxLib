@@ -1,4 +1,5 @@
 import requests
+import json
 
 api = 'https://discordapp.com/api/v6'
 
@@ -14,7 +15,8 @@ class client(object):
         headers = {
           "Authorization":f"Bot {self.token}"
           }
-        requests.post(url=url, headers=headers, json=payload)
+        r = requests.post(url=url, headers=headers, json=payload)
+        return json.loads(r.text)
 
     async def send_embed(self, channel_id, desc, title=''):
         url = api + f'/channels/{str(channel_id)}/messages'
@@ -27,4 +29,17 @@ class client(object):
         headers = {
           "Authorization":f"Bot {self.token}"
           }
+        r = requests.post(url=url, headers=headers, json=payload)
+        return json.loads(r.text)
+
+    async def edit_msg(self, message, new_msg):
+        message_id = message["id"]
+        channel = message['channel_id']
+        headers = {
+          "Authorization":f"Bot {self.token}"
+          }
+        payload = {
+          "content":new_msg
+          }
+        url = api + f'/channels/{str(channel_id)}/messages/{str(message_id)}'
         requests.post(url=url, headers=headers, json=payload)
