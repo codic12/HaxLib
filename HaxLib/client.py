@@ -10,25 +10,14 @@ class client(object):
           "Authorization":f"Bot {self.token}"
           }
 
-    async def send_msg(self, channel_id, msg:str):
+    async def send_msg(self, channel_id, msg:str='',embed=None):
         url = api + f'/channels/{str(channel_id)}/messages'
         payload = {
           "content": msg
           }
-
-        r = requests.post(url=url, headers=self.headers, json=payload)
-        return json.loads(r.text)
-        
-    async def send_embed(self, channel_id, desc, title=''):
-        url = api + f'/channels/{str(channel_id)}/messages'
-        payload = {
-          "embed": {
-            "title": title,
-            "description": desc
-            }
-          }
-        r = requests.post(url=url, headers=self.headers, json=payload)
-        return json.loads(r.text)
+        if embed != None:
+            payload.update(embed)
+        return json.loads(requests.post(url=url, headers=self.headers, json=payload).text)
         
     async def edit_msg(self, message, new_msg):
         message_id = message["id"]
